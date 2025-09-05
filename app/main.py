@@ -72,8 +72,7 @@ Your job:
    - Search for all occurrences of S066, S067, SD_VKMLOG_SHOW, and other obsolete CM elements in custom code.
    - Replace them with recommended S/4HANA equivalents (UKM_ITEM, UKM_COMMITMENTS, UKM_LOGS_DISPLAY, etc.).
    - Preserve functional behavior while aligning with new credit management data model.
-   - Require output JSON with keys: original_code_snippet, remediated_code_snippet, changes[] (line/before/after/reason).
-
+   
 Return ONLY strict JSON:
 {{
   "assessment": "<concise note 2217124 impact>",
