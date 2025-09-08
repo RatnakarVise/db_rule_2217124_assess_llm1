@@ -22,7 +22,11 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 
 app = FastAPI(title="OSS Note 2217124 Credit Management Assessment & Remediation Prompt")
-
+# --- SNIPPET HELPER ---
+def snippet_at(text: str, start: int, end: int) -> str:
+    s = max(0, start - 60)
+    e = min(len(text), end + 60)
+    return text[s:e].replace("\n", "\\n")
 # ---- Strict input models ----
 class SelectItem(BaseModel):
     table: str
@@ -31,6 +35,7 @@ class SelectItem(BaseModel):
     used_fields: List[str]
     suggested_fields: List[str]
     suggested_statement: Optional[str] = None
+    snippet: Optional[str] = None 
 
     @field_validator("used_fields", "suggested_fields", mode="before")
     @classmethod
@@ -55,8 +60,11 @@ def summarize_context(ctx: NoteContext) -> dict:
     }
 
 # ---- LangChain prompt ----
-SYSTEM_MSG = "You are a precise ABAP reviewer familiar with SAP Note 2217124 (Credit Management changes) who outputs strict JSON only."
-
+SYSTEM_MSG = """You are a precise ABAP reviewer familiar with SAP Note 2217124 (Credit Management changes) who outputs strict JSON only."
+You are evaluating a system context related to SAP OSS Note 2217124. We provide:
+- system context
+- list of detected changes in code (with offending code snippets when available)
+"""
 USER_TEMPLATE = """
 You are evaluating a system context related to SAP OSS Note 2217124 (Credit Management changes from classic SD to FSCM in S/4HANA). We provide:
 - system context
