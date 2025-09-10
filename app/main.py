@@ -68,6 +68,16 @@ write a bullet point that:
 - Bullet points should contain both offending code snippet and the fix (no numbering or referencing like "snippet[1]": display the code inline).
 - Do NOT omit any snippet; all must be covered, no matter how many there are.
 - Only show actual ABAP code for each snippet with its specific action.
+Return JSON with keys:
+{{
+  "assessment": "<concise note 2217124 impact>",
+  "llm_prompt": [
+     {{
+       "offending_code": "<actual snippet>",
+       "fix": "<replacement suggestion>"
+     }}
+  ]
+}}
 """.strip()
 USER_TEMPLATE = """
 You are evaluating a system context related to SAP OSS Note 2217124 (Credit Management changes from classic SD to FSCM in S/4HANA). We provide:
