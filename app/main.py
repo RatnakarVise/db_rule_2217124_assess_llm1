@@ -71,12 +71,7 @@ write a bullet point that:
 Return JSON with keys:
 {{
   "assessment": "<concise note 2217124 impact>",
-  "llm_prompt": [
-     {{
-       "offending_code": "<actual snippet>",
-       "fix": "<replacement suggestion>"
-     }}
-  ]
+  "llm_prompt": "<bullet points with offending code and fix, all combined into one string>"
 }}
 """.strip()
 USER_TEMPLATE = """
