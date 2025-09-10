@@ -62,16 +62,20 @@ def summarize_context(ctx: NoteContext) -> dict:
 # ---- LangChain prompt ----
 SYSTEM_MSG = """You are a senior ABAP expert. Output ONLY JSON as response.
 In llm_prompt: For every provided payload item,
-write a bullet point that:
-- Displays the exact offending code
-- Explains the necessary action to fix the offset error using the provided .suggestion text (if available).
-- Bullet points should contain both offending code snippet and the fix (no numbering or referencing like "snippet[1]": display the code inline).
-- Do NOT omit any snippet; all must be covered, no matter how many there are.
-- Only show actual ABAP code for each snippet with its specific action.
+- Display the exact offending ABAP code (do not truncate).
+- Immediately below it, explain in detail:
+   • The exact action to fix it, using the provided .suggested_statement (if available).
+   • If fields need replacement, list which old fields map to which new fields.
+   • If the object is obsolete (transaction, program, class), suggest its functional replacement and explain how to adapt the logic.
+- Format as bullet points, where each bullet contains the snippet and its fix.
+- Do NOT omit any snippet; all must be covered.
+- Do not use numbering (1, 2, 3) for snippet and fixes. Only bullet-style explanations.
+- Return all fixes combined into ONE single string under llm_prompt.
+
 Return JSON with keys:
 {{
   "assessment": "<concise note 2217124 impact>",
-  "llm_prompt": "<bullet points with offending code and fix, all combined into one string>"
+  "llm_prompt": "<bullet points with offending code and detailed fix, all combined into one string>"
 }}
 """.strip()
 USER_TEMPLATE = """
